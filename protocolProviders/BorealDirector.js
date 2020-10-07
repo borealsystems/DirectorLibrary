@@ -14,12 +14,7 @@ class BorealDirector {
     this.device = _device
   }
 
-  init = () => {
-    devices.get(this.device.id, (error, value) => {
-      if (error) log('error', `virtual/device/${this.device.id}`, error)
-      devices.put(this.device.id, { ...value, status: STATUS.OK })
-    })
-  }
+  init = () => devices.updateOne({ id: this.device.id }, { $set: { status: STATUS.OK } })
 
   destroy = () => {}
 

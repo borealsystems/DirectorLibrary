@@ -23,10 +23,7 @@ class GenericOSC {
     this.oscClient.on('error', function (error) {
       log('error', `virtual/device/${this.device.id}`, error)
     })
-    devices.get(this.device.id, (error, value) => {
-      if (error) log('error', `virtual/device/${this.device.id}`, error)
-      devices.put(this.device.id, { ...value, status: STATUS.OK })
-    })
+    devices.updateOne({ id: this.device.id }, { $set: { status: STATUS.OK } })
   }
 
   destroy = (callback) => {
