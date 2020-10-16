@@ -13,11 +13,13 @@ class ConnectionProviderOSC {
     {
       id: 'host',
       label: 'Host',
+      required: true,
       regex: REGEX.HOST
     },
     {
       id: 'port',
       label: 'UDP Port',
+      required: true,
       regex: REGEX.PORT
     }
   ]
