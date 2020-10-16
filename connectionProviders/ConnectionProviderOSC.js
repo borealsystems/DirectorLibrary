@@ -1,0 +1,62 @@
+import osc from 'osc'
+import { devices } from '../../../db'
+import log from '../../../utils/log'
+import STATUS from '../../../utils/statusEnum'
+import REGEX from '../../../utils/regexEnum'
+
+class ConnectionProviderOSC {
+  constructor (_device) {
+    this.device = _device
+  }
+
+  static parameters = [
+    {
+      id: 'host',
+      label: 'Host',
+      regex: REGEX.HOST
+    },
+    {
+      id: 'port',
+      label: 'UDP Port',
+      regex: REGEX.PORT
+    }
+  ]
+
+  init = () => {
+    this.client = new osc.UDPPort({
+      localAddress: '0.0.0.0',
+      localPort: 0,
+      metadata: true
+    })
+    this.client.open()
+    this.client.on('error', (error) => {
+      log('error', `virtual/device/${this.device.id}`, error)
+    })
+    devices.updateOne({ id: this.device.id }, { $set: { status: STATUS.OK } })
+  }
+
+  destroy = (callback) => {
+    if (this.client) {
+      this.client.close()
+      this.client = null
+    }
+    if (typeof callback === 'function') {
+      callback()
+    }
+  }
+
+  recreate = () => {}
+
+  connectionProviderInterface = ({ address, args }) => {
+    this.client.send(
+      {
+        address: address,
+        args: args
+      },
+      this.device.configuration[0].value,
+      this.device.configuration[1].value
+    )
+  }
+}
+
+export default ConnectionProviderOSC
