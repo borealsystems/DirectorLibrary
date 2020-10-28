@@ -26,7 +26,7 @@ class ProtocolProviderRossTalk extends ConnectionProviderTCP {
     switch (_action.providerFunction.id) {
       case 'message':
         this.connectionProviderInterface({
-          message: `${_action.parameters.find(parameter => parameter.id === 'message').value}\r`
+          message: `${_action.parameters.message}\r`
         })
         break
     }

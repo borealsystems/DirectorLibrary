@@ -77,38 +77,38 @@ class ProtocolProviderOSC extends ConnectionProviderOSC {
     switch (_action.providerFunction.id) {
       case 'address':
         this.connectionProviderInterface({
-          address: _action.parameters.find((parameter) => { return parameter.id === 'address' }).value
+          address: _action.parameters.address
         })
         break
       case 'string':
         this.connectionProviderInterface({
-          address: _action.parameters.find((parameter) => { return parameter.id === 'address' }).value,
+          address: _action.parameters.address,
           args: [
             {
               type: 's',
-              value: _action.parameters.find((parameter) => { return parameter.id === 'string' }).value
+              value: _action.parameters.string
             }
           ]
         })
         break
       case 'integer':
         this.connectionProviderInterface({
-          address: _action.parameters.find((parameter) => { return parameter.id === 'address' }).value,
+          address: _action.parameters.address,
           args: [
             {
               type: 'i',
-              value: _action.parameters.find((parameter) => { return parameter.id === 'int' }).value
+              value: _action.parameters.int
             }
           ]
         })
         break
       case 'float':
         this.connectionProviderInterface({
-          address: _action.parameters.find((parameter) => { return parameter.id === 'address' }).value,
+          address: _action.parameters.address,
           args: [
             {
               type: 'f',
-              value: _action.parameters.find((parameter) => { return parameter.id === 'float' }).value
+              value: _action.parameters.float
             }
           ]
         })

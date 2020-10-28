@@ -195,7 +195,7 @@ class DeviceProviderResolumeArena extends ConnectionProviderOSC {
         break
       case 'clearLayer': // Clear Layer
         this.connectionProviderInterface({
-          address: `/composition/layers/${_action.parameters.find((p) => (p.id === 'layer')).value}/clear`,
+          address: `/composition/layers/${_action.parameters.layer}/clear`,
           args: [{ type: 'i', value: 1 }]
         })
         break
@@ -203,7 +203,7 @@ class DeviceProviderResolumeArena extends ConnectionProviderOSC {
       // Connecting Things
       case 'connectColumn': // Connect Column
         this.connectionProviderInterface({
-          address: `/composition/columns/${_action.parameters.find((p) => (p.id === 'column')).value}/connect`,
+          address: `/composition/columns/${_action.parameters.column}/connect`,
           args: [{ type: 'i', value: 1 }]
         })
         break
@@ -221,7 +221,7 @@ class DeviceProviderResolumeArena extends ConnectionProviderOSC {
         break
       case 'connectClip': // Connect Clip
         this.connectionProviderInterface({
-          address: `/composition/layers/${_action.parameters.find((p) => (p.id === 'layer')).value}/clips/${_action.parameters.find((p) => (p.id === 'clip')).value}/connect`,
+          address: `/composition/layers/${_action.parameters.layer}/clips/${_action.parameters.clip}/connect`,
           args: [{ type: 'i', value: 1 }]
         })
         break
@@ -229,19 +229,19 @@ class DeviceProviderResolumeArena extends ConnectionProviderOSC {
       // Selecting Things
       case 'selectDeck': // Select Deck
         this.connectionProviderInterface({
-          address: `/composition/decks/${_action.parameters.find((p) => (p.id === 'deck')).value}/select`,
+          address: `/composition/decks/${_action.parameters.deck}/select`,
           args: [{ type: 'i', value: 1 }]
         })
         break
       case 'selectLayer': // Select Deck
         this.connectionProviderInterface({
-          address: `/composition/layers/${_action.parameters.find((p) => (p.id === 'layer')).value}/select`,
+          address: `/composition/layers/${_action.parameters.layer}/select`,
           args: [{ type: 'i', value: 1 }]
         })
         break
       case 'selectClip': // Select Deck
         this.connectionProviderInterface({
-          address: `/composition/layers/${_action.parameters.find((p) => (p.id === 'layer')).value}/clips/${_action.parameters.find((p) => (p.id === 'clip')).value}/select`,
+          address: `/composition/layers/${_action.parameters.layer}/clips/${_action.parameters.clip}/select`,
           args: [{ type: 'i', value: 1 }]
         })
         break

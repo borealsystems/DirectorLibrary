@@ -26,16 +26,16 @@ class ConnectionProviderTCP {
 
   init = () => {
     this.socket = new net.Socket()
-    this.socket.connect(this.device.configuration[1].value, this.device.configuration[0].value)
+    this.socket.connect(this.device.configuration.port, this.device.configuration.host)
     this.socket.setKeepAlive(true, 0)
 
     this.socket.on('connect', () => {
-      log('info', `virtual/device/${this.device.id}`, 'Socket Connected')
+      log('info', `virtual/device/${this.device.id} (${this.device.label})`, 'Socket Connected')
       devices.updateOne({ id: this.device.id }, { $set: { status: STATUS.OK } })
     })
 
     this.socket.on('error', (error) => {
-      log('error', `virtual/device/${this.device.id}`, `${error}`)
+      log('error', `virtual/device/${this.device.id} (${this.device.label})`, `${error}`)
       devices.updateOne({ id: this.device.id }, { $set: { status: STATUS.ERROR } })
     })
 
@@ -45,14 +45,14 @@ class ConnectionProviderTCP {
         case true:
           break
         case false:
-          log('error', `virtual/device/${this.device.id}`, 'Socket Closed, Reconnecting in 10 Seconds')
+          log('error', `virtual/device/${this.device.id} (${this.device.label})`, 'Socket Closed, Reconnecting in 10 Seconds')
           setTimeout(() => this.recreate(), 10000)
       }
     })
   }
 
   destroy = (callback) => {
-    log('info', `virtual/device/${this.device.id}`, 'Destroying Instance')
+    log('info', `virtual/device/${this.device.id} (${this.device.label})`, 'Destroying Instance')
     this.doNotRecreate = true
     if (this.socket) {
       this.socket.destroy()

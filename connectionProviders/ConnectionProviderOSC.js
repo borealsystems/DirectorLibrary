@@ -32,7 +32,7 @@ class ConnectionProviderOSC {
     })
     this.client.open()
     this.client.on('error', (error) => {
-      log('error', `virtual/device/${this.device.id}`, error)
+      log('error', `virtual/device/${this.device.id} (${this.device.label})`, error)
     })
     devices.updateOne({ id: this.device.id }, { $set: { status: STATUS.OK } })
   }
@@ -55,8 +55,8 @@ class ConnectionProviderOSC {
         address: address,
         args: args
       },
-      this.device.configuration[0].value,
-      this.device.configuration[1].value
+      this.device.configuration.host,
+      this.device.configuration.port
     )
   }
 }
