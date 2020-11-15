@@ -87,8 +87,29 @@ class ProtocolProviderBorealDirector {
         break
 
       case 'assignControllerPanel':
-        console.log(_action)
-        controllers.findOne({ id: _action.parameters.controller })
+        controllers.findOne({ id: _action.parameters.controller.id })
+          .then((controller, err) => {
+            if (err) {
+              log('error', 'core/lib/controllers', err)
+            } else {
+              controllers.updateOne(
+                { id: controller.id },
+                {
+                  $set: {
+                    panel: _action.parameters.panel
+                  }
+                },
+                { upsert: true }
+              )
+            }
+          })
+          .then(err => {
+            if (err) {
+              log('error', 'core/lib/controllers', err)
+            } else {
+              return controllers.findOne({ id: _action.parameters.controller.id })
+            }
+          })
           .then((controller) => {
             log('info', 'core/lib/controllers', `Updated ${controller.id}`)
             pubsub.publish('CONTROLLER_UPDATE', { controller: controller })
