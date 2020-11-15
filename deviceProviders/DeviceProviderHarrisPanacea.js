@@ -5,7 +5,6 @@ class DeviceProviderHarrisPanacea extends ConnectionProviderSerial {
     super(_device)
     this.levels = []
   }
-  // /\d\d: \d\d\dx\d\d\d/gm
 
   static providerRegistration = {
     id: 'DeviceProviderHarrisPanacea',
@@ -16,8 +15,8 @@ class DeviceProviderHarrisPanacea extends ConnectionProviderSerial {
 
   providerFunctions = () => new Promise(resolve => {
     const levelArray = [
-      { id: '00', label: 'SDI', active: false },
-      { id: '01', label: 'ANALOG AUDIO', active: false }
+      { id: '00', label: 'SDI', disabled: true },
+      { id: '01', label: 'ANALOG AUDIO', disabled: true }
     ]
     if (this.levels.length === 0) {
       this.serialport.write('INFORMATION\r\n')
@@ -26,7 +25,7 @@ class DeviceProviderHarrisPanacea extends ConnectionProviderSerial {
         levelData.push(data)
         if (data.match(/Level 15: ((\d\d\dx\d\d\d)|(-------))/gm)) {
           this.parser.removeListener('data', listener)
-          levelData.join('\n').match(/\d\d: \d\d\dx\d\d\d/gm).map(level => { levelArray[Number(level.slice(0, 2))].active = true })
+          levelData.join('\n').match(/\d\d: \d\d\dx\d\d\d/gm).map(level => { levelArray[Number(level.slice(0, 2))].disabled = false })
           this.levels = levelArray
         }
       }
@@ -41,7 +40,7 @@ class DeviceProviderHarrisPanacea extends ConnectionProviderSerial {
             inputType: 'comboBox',
             label: 'Level',
             id: 'level',
-            items: this.levels.length === 0 ? levelArray : this.levels.filter(level => level.active === true)
+            items: this.levels.length === 0 ? levelArray : this.levels
           },
           {
             inputType: 'textInput',
